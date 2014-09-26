@@ -19,12 +19,10 @@ public class HomePage extends WebPage {
 		super(parameters);
 
 		EntityManager em = Persistence.createEntityManagerFactory("com.pohlandt.wicket-proto").createEntityManager();
-		Query query = em.createQuery("SELECT t FROM text t");
+		Query query = em.createNamedQuery("Text.findAll");
 		Collection<Text> col = (Collection<Text>) query.getResultList();
+		Text t1 = em.find(Text.class, 1l);
 		
-		add(new Label("version", "text count: " + col.size()));
-
-		// TODO Add your page's components here
-
+		add(new Label("test", "text 1 text=" + (t1 == null ? "null" : t1.getText())  + " text count: " + col.size()));
     }
 }

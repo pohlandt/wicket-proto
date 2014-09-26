@@ -9,23 +9,24 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name="Text")
 @NamedQuery(name="Text.findAll", query="SELECT t FROM Text t")
 public class Text implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String id;
+	private long id;
 
 	private String text;
 
 	public Text() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
