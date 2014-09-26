@@ -1,3 +1,4 @@
+/*
 package com.pohlandt;
 
 import javax.naming.Context;
@@ -11,9 +12,6 @@ import org.junit.Test;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 
-/**
- * Simple test using the WicketTester
- */
 public class TestHomePage
 {
 	private WicketTester tester;
@@ -55,12 +53,11 @@ public class TestHomePage
 	@Test
 	public void homepageRendersSuccessfully()
 	{
-		/*
 		//start and render the test page
 		tester.startPage(HomePage.class);
 
 		//assert rendered page class
 		tester.assertRenderedPage(HomePage.class);
-		*/
 	}
 }
+*/
