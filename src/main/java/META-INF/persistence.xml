@@ -6,14 +6,16 @@
         </description>
 
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<non-jta-data-source>java:comp/env/jdbc/wicketproto</non-jta-data-source>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
+        <!-- 
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://pohlandt.net:8003/wicketproto" />
             <property name="javax.persistence.jdbc.user" value="wicketproto" />
             <property name="javax.persistence.jdbc.password" value="itsjustaprotomon" />
- 
+  		-->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.hbm2ddl.auto" value="validate" />
