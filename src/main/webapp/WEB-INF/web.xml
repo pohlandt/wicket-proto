@@ -5,16 +5,31 @@
 
 	<display-name>wicket-proto</display-name>
 
-	<!--
-		There are three means to configure Wickets configuration mode and they 
-		are tested in the order given.
-		
-		1) A system property: -Dwicket.configuration 
-		2) servlet specific <init-param> 
-		3) context specific <context-param>
-
-		The value might be either "development" (reloading when templates change) or 
+	<!-- There are three means to configure Wickets configuration mode and they 
+		are tested in the order given. 1) A system property: -Dwicket.configuration 
+		2) servlet specific <init-param> 3) context specific <context-param> The 
+		value might be either "development" (reloading when templates change) or 
 		"deployment". If no configuration is found, "development" is the default. -->
+
+	<context-param>
+		<param-name>jpa-persistence-unit-name</param-name>
+		<param-value>com.pohlandt.wicket-proto</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>configuration</param-name>
+		<param-value>deployment</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>JpaServletFilter</filter-name>
+		<filter-class>com.pohlandt.JpaServletFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>JpaServletFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<filter>
 		<filter-name>wicket.wicket-proto</filter-name>
@@ -29,11 +44,11 @@
 		<filter-name>wicket.wicket-proto</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<resource-ref>
-      <description>DB Connection</description>
-      <res-ref-name>jdbc/wicketproto</res-ref-name>
-      <res-type>javax.sql.DataSource</res-type>
-      <res-auth>Container</res-auth>
-  </resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/wicketproto</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
 </web-app>
