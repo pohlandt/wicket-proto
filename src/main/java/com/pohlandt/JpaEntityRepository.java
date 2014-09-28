@@ -19,9 +19,21 @@ public class JpaEntityRepository implements IEntityRepository {
 		final Query q = getEntityManager().createNamedQuery(String.format("%s.findAll", Args.notNull(type, "type").getSimpleName()));
 		return (Collection<T>) q.getResultList(); 
 	}
+
+	@Override
+	public <T> T persist(T entity) {
+		EntityManager em = getEntityManager();
+		
+		if(em.contains(entity)){
+			em.merge(entity);
+		} else {
+			em.persist(entity);
+		}
+				
+		return entity;
+	}
 	
 	public EntityManager getEntityManager(){
 		return entityManagerFactory.getEntityManager();
 	}
-
 }

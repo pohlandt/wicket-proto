@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.apache.wicket.guice.GuiceComponentInjector;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.cycle.IRequestCycleListener;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -21,7 +22,9 @@ import com.google.inject.Module;
 public class WicketApplication extends WebApplication
 {
 	private final Injector injector;
-	@Inject Logger log;
+	
+	@Inject IRequestCycleListener requestCycleListener;
+	@Inject Logger logger;
 	
 	public WicketApplication() {
 		injector = Guice.createInjector(newGuiceModules());
@@ -44,11 +47,24 @@ public class WicketApplication extends WebApplication
 	{
 		super.init();
 		
-		log.log(Level.INFO, "Here we go...");
+		logger.log(Level.INFO, "Here we go...");
 		
 		final GuiceComponentInjector guiceListener = new GuiceComponentInjector(this, injector);
 		getComponentInstantiationListeners().add(guiceListener);
 		getBehaviorInstantiationListeners().add(guiceListener);
+		
+		if(requestCycleListener != null){
+			getRequestCycleListeners().add(requestCycleListener);	
+		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		logger.log(Level.INFO, "destroying application");
+		super.onDestroy();
+		if(requestCycleListener instanceof IDestroyable){
+			((IDestroyable)requestCycleListener).onDestroy();
+		}
 	}
 	
 	protected Module[] newGuiceModules() {

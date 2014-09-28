@@ -9,9 +9,13 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.spi.PersistenceUnitTransactionType;
 
+import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
+import org.apache.wicket.request.cycle.IRequestCycleListener;
+
 import model.Text;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.util.Providers;
 
 public class TestModule extends AbstractModule {
 
@@ -74,6 +78,8 @@ public class TestModule extends AbstractModule {
 	
 	@Override
 	protected void configure() {
+		bind(IRequestCycleListener.class).toInstance(new AbstractRequestCycleListener() {
+		});
 		bind(IEntityRepository.class).to(JpaEntityRepository.class);
 		bind(IEntityManagerFactory.class).toInstance(entityManagerFactoryImpl);
 	}

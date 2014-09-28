@@ -5,7 +5,7 @@
             Persistence unit for the wicket bootstrap prototype
         </description>
 
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<non-jta-data-source>java:comp/env/jdbc/wicketproto</non-jta-data-source>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 
