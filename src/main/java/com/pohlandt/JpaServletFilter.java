@@ -11,8 +11,14 @@ public class JpaServletFilter implements Filter
 
    @Override public void init( FilterConfig filterConfig ) throws ServletException
    {
-      String puName = filterConfig.getServletContext().getInitParameter( "jpa-persistence-unit-name" );
-      emf = Persistence.createEntityManagerFactory( puName );
+	   try{
+		   String puName = filterConfig.getServletContext().getInitParameter( "jpa-persistence-unit-name" );
+		   System.out.println("persistence unit name: " + puName);
+		   emf = Persistence.createEntityManagerFactory( puName );   
+	   } catch (Exception ex){
+		   System.out.println("failed to create EntityManagerFactory");
+		   System.out.println(ex);
+	   }
    }
 
    @Override public void destroy()
@@ -24,18 +30,24 @@ public class JpaServletFilter implements Filter
    @Override public void doFilter( ServletRequest requ, ServletResponse resp, FilterChain chain )
    throws IOException, ServletException
    {
-      EntityManager     em = emf.createEntityManager();
-      EntityTransaction tx = em.getTransaction();
-      entityManagerHolder.set( em );
-      try {
-         tx.begin();
-         chain.doFilter( requ, resp );
-         tx.commit();
-      } finally {
-         if( tx != null && tx.isActive() ) tx.rollback();
-         em.close();
-         entityManagerHolder.remove();
-      }
+	  try {
+		  EntityManager     em = emf.createEntityManager();
+	      EntityTransaction tx = em.getTransaction();
+	      entityManagerHolder.set( em );
+	      try {
+	         tx.begin();
+	         chain.doFilter( requ, resp );
+	         tx.commit();
+	      } finally {
+	         if( tx != null && tx.isActive() ) tx.rollback();
+	         em.close();
+	         entityManagerHolder.remove();
+	      }		  
+	  }
+	  catch(Exception ex){
+		  System.out.println("failure in JpaServletFilter.doFilter");
+		  System.out.println(ex);
+	  }
    }
 
    public static EntityManager getEntityManager()
