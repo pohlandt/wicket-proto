@@ -1,8 +1,5 @@
 package com.pohlandt;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -11,6 +8,7 @@ import javax.persistence.Persistence;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -31,7 +29,7 @@ public class JpaRequestCycleListener extends AbstractRequestCycleListener implem
 	@Inject
 	public JpaRequestCycleListener(Logger logger, @Named("persistence-unit-name")String puName) {
 		this.logger = logger;
-		logger.log(Level.WARNING, "initializing with persistence unit name" + puName);
+		logger.info("initializing with persistence unit name {}", puName);
 		emf = Persistence.createEntityManagerFactory( puName );   
 	}
 
@@ -39,7 +37,7 @@ public class JpaRequestCycleListener extends AbstractRequestCycleListener implem
 		RequestCycle cycle = RequestCycle.get();
 		EntityManager em = cycle.getMetaData(EntityManagerKey);
 		if (em == null) {
-			logger.log(Level.WARNING, "creating entity manager...");
+			logger.debug("creating entity manager...");
 			em = emf.createEntityManager();
 			cycle.setMetaData(EntityManagerKey, em);
 			EntityTransaction tx = em.getTransaction();
@@ -52,21 +50,21 @@ public class JpaRequestCycleListener extends AbstractRequestCycleListener implem
 	
 	@Override
 	public void onEndRequest(RequestCycle cycle) {
-		logger.log(Level.WARNING, "on end request");
+		logger.debug("on end request");
 		EntityManager em = cycle.getMetaData(EntityManagerKey);
 		if (em != null){
-			logger.log(Level.WARNING, "entity manager found in cycle");
+			logger.debug("entity manager found in cycle");
 			EntityTransaction tx = cycle.getMetaData(TransactionKey);
 			try {
-				logger.log(Level.WARNING, "committing...");
+				logger.debug("committing...");
 				tx.commit();	
 		      } finally {
 				if (tx.isActive()) {
-					logger.log(Level.WARNING, "rolling back...");
+					logger.warn("rolling back...");
 					tx.rollback();
 				}
 				
-				logger.log(Level.WARNING, "closing...");
+				logger.debug("closing...");
 				em.close();
 			}
 			
@@ -77,7 +75,7 @@ public class JpaRequestCycleListener extends AbstractRequestCycleListener implem
 		
 	@Override
 	public void onDestroy() {
-		logger.log(Level.WARNING, "destroying jpa request cycle listener");
+		logger.info("destroying jpa request cycle listener");
 		emf.close();
 	}
 }
