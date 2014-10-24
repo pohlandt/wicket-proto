@@ -8,6 +8,7 @@ import javax.persistence.Persistence;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;

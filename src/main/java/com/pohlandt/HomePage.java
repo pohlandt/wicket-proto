@@ -6,6 +6,7 @@ import model.Text;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.markup.head.filter.HeaderResponseContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -55,5 +56,7 @@ public class HomePage extends WebPage {
 		form.add(button);
 		
 		add(form);
+		
+		add(new HeaderResponseContainer("bottomJS", "bottomJS"));
     }
 }

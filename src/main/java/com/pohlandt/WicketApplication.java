@@ -1,6 +1,9 @@
 package com.pohlandt;
 
 import org.apache.wicket.guice.GuiceComponentInjector;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.filter.JavaScriptFilteredIntoFooterHeaderResponse;
+import org.apache.wicket.markup.html.IHeaderResponseDecorator;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.IRequestCycleListener;
@@ -54,6 +57,15 @@ public class WicketApplication extends WebApplication
 		if(requestCycleListener != null){
 			getRequestCycleListeners().add(requestCycleListener);	
 		}
+		
+		setHeaderResponseDecorator(new IHeaderResponseDecorator()
+        {
+            @Override
+            public IHeaderResponse decorate(IHeaderResponse response)
+            {
+                return new JavaScriptFilteredIntoFooterHeaderResponse(response, "bottomJS");
+            }
+        });
 	}
 	
 	@Override
