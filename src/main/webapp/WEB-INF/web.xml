@@ -16,20 +16,21 @@
 		<param-value>deployment</param-value>
 	</context-param>
 
-	<filter>
-		<filter-name>wicket.wicket-proto</filter-name>
-		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
-		<init-param>
-			<param-name>applicationClassName</param-name>
-			<param-value>com.pohlandt.WicketApplication</param-value>
-		</init-param>
-	</filter>
+	<listener>
+        <listener-class>com.pohlandt.servlet.GuiceWicketContextListener</listener-class>
+    </listener>
+    
+    <filter>
+        <description>Guice</description>
+        <filter-name>guiceFilter</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
 
-	<filter-mapping>
-		<filter-name>wicket.wicket-proto</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
+    <filter-mapping>
+        <filter-name>guiceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
 	<resource-ref>
 		<description>DB Connection</description>
 		<res-ref-name>jdbc/wicketproto</res-ref-name>

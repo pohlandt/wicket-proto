@@ -62,7 +62,7 @@
 		</dependency>
 		-->
 		
-		<!-- override dep by wicket-bootstrap-core to prevent hibernate failure -->
+		<!-- override dep by wicket-bootstrap-core to prevent hibernate failure when creating em fac -->
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
@@ -83,12 +83,30 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-servlet</artifactId>
+			<version>3.0</version>
+		</dependency>
+		
+		
+		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-guice</artifactId>
 			<version>6.17.0</version>
 		</dependency>
 		
-		
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-guice</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+						
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-shiro</artifactId>
+			<version>6.17.0</version>
+		</dependency>
+				
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
@@ -109,6 +127,11 @@
 			<version>1.1.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
 
 		<!--  JUNIT DEPENDENCY FOR TESTING -->
 		<dependency>

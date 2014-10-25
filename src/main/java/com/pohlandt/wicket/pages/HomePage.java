@@ -1,4 +1,4 @@
-package com.pohlandt;
+package com.pohlandt.wicket.pages;
 
 import java.util.Collection;
 
@@ -6,8 +6,6 @@ import model.Text;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
-import org.apache.wicket.markup.head.filter.HeaderResponseContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -16,10 +14,14 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.wicketstuff.shiro.ShiroConstraint;
+import org.wicketstuff.shiro.annotation.ShiroSecurityConstraint;
 
 import com.google.inject.Inject;
+import com.pohlandt.entity.IEntityRepository;
 
-public class HomePage extends WebPage {
+@ShiroSecurityConstraint(constraint = ShiroConstraint.IsAuthenticated)
+public class HomePage extends BasePage {
 	private static final long serialVersionUID = 1L;
 
 	@Inject IEntityRepository entityRepository;
@@ -56,7 +58,5 @@ public class HomePage extends WebPage {
 		form.add(button);
 		
 		add(form);
-		
-		add(new HeaderResponseContainer("bottomJS", "bottomJS"));
     }
 }

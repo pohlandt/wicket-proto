@@ -1,4 +1,4 @@
-package com.pohlandt;
+package com.pohlandt.wicket;
 
 import org.apache.wicket.guice.GuiceComponentInjector;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -8,11 +8,20 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.IRequestCycleListener;
 import org.slf4j.Logger;
+import org.wicketstuff.shiro.annotation.AnnotationsShiroAuthorizationStrategy;
+import org.wicketstuff.shiro.authz.ShiroUnauthorizedComponentListener;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.pohlandt.IDestroyable;
+import com.pohlandt.inject.LoggingModule;
+import com.pohlandt.inject.ProtoModule;
+import com.pohlandt.test.Start;
+import com.pohlandt.wicket.pages.HomePage;
+import com.pohlandt.wicket.pages.LoginPage;
+import com.pohlandt.wicket.pages.UnauthorizedPage;
 
 import de.agilecoders.wicket.core.Bootstrap;
 
@@ -20,11 +29,11 @@ import de.agilecoders.wicket.core.Bootstrap;
  * Application object for your web application.
  * If you want to run this application without deploying, run the Start class.
  * 
- * @see com.pohlandt.Start#main(String[])
+ * @see com.pohlandt.test.Start#main(String[])
  */
 public class WicketApplication extends WebApplication
 {
-	private final Injector injector;
+	protected final Injector injector;
 	
 	@Inject IRequestCycleListener requestCycleListener;
 	@Inject Logger logger;
@@ -70,6 +79,14 @@ public class WicketApplication extends WebApplication
         });
 		
 		Bootstrap.install(this);
+		
+		AnnotationsShiroAuthorizationStrategy authz = new AnnotationsShiroAuthorizationStrategy();
+		getSecuritySettings().setAuthorizationStrategy(authz);
+		getSecuritySettings().setUnauthorizedComponentInstantiationListener(
+			new ShiroUnauthorizedComponentListener(LoginPage.class, UnauthorizedPage.class, authz));
+		
+		mountPage("login", LoginPage.class);
+		mountPage("unauthorized", UnauthorizedPage.class);
 	}
 	
 	@Override
@@ -83,6 +100,6 @@ public class WicketApplication extends WebApplication
 	}
 	
 	protected Module[] newGuiceModules() {
-		return new Module[]{ new ProtoModule() };
+		return new Module[]{ new LoggingModule(), new ProtoModule() };
 	}
 }

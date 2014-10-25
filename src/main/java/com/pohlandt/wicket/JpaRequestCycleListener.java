@@ -1,4 +1,4 @@
-package com.pohlandt;
+package com.pohlandt.wicket;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import com.pohlandt.IDestroyable;
+import com.pohlandt.entity.IEntityManagerFactory;
 
 public class JpaRequestCycleListener extends AbstractRequestCycleListener implements IDestroyable, IEntityManagerFactory {
 	

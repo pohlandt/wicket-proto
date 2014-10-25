@@ -1,8 +1,11 @@
-package com.pohlandt;
+package com.pohlandt.test;
 
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.pohlandt.wicket.pages.HomePage;
+import com.pohlandt.wicket.pages.LoginPage;
 
 public class TestHomePage
 {
@@ -15,12 +18,12 @@ public class TestHomePage
 	}
 
 	@Test
-	public void homepageRendersSuccessfully()
+	public void loginPageRendersSuccessfully()
 	{
 		//start and render the test page
 		tester.startPage(HomePage.class);
 
 		//assert rendered page class
-		tester.assertRenderedPage(HomePage.class);
+		tester.assertRenderedPage(LoginPage.class);
 	}
 }

@@ -1,4 +1,4 @@
-package com.pohlandt;
+package com.pohlandt.entity;
 
 import java.util.Collection;
 

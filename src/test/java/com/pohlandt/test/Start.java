@@ -1,4 +1,4 @@
-package com.pohlandt;
+package com.pohlandt.test;
 
 import org.apache.wicket.util.time.Duration;
 import org.eclipse.jetty.server.Server;

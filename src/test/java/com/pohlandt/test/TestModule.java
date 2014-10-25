@@ -1,4 +1,4 @@
-package com.pohlandt;
+package com.pohlandt.test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +19,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.internal.Slf4jLoggerProvider;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.util.Providers;
+import com.pohlandt.entity.IEntityManagerFactory;
+import com.pohlandt.entity.IEntityRepository;
+import com.pohlandt.entity.JpaEntityRepository;
 
 public class TestModule extends AbstractModule {
 
@@ -81,7 +84,6 @@ public class TestModule extends AbstractModule {
 	
 	@Override
 	protected void configure() {
-		bind(Logger.class).toProvider(new Slf4jLoggerProvider());
 		bind(IRequestCycleListener.class).toInstance(new AbstractRequestCycleListener() {
 		});
 		bind(IEntityRepository.class).to(JpaEntityRepository.class);
