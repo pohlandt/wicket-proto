@@ -6,18 +6,13 @@ import org.apache.wicket.markup.head.filter.JavaScriptFilteredIntoFooterHeaderRe
 import org.apache.wicket.markup.html.IHeaderResponseDecorator;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.request.cycle.IRequestCycleListener;
 import org.slf4j.Logger;
 import org.wicketstuff.shiro.annotation.AnnotationsShiroAuthorizationStrategy;
 import org.wicketstuff.shiro.authz.ShiroUnauthorizedComponentListener;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.pohlandt.IDestroyable;
-import com.pohlandt.inject.LoggingModule;
-import com.pohlandt.inject.ProtoModule;
+import com.pohlandt.security.ISecurityManager;
 import com.pohlandt.wicket.pages.HomePage;
 import com.pohlandt.wicket.pages.LoginPage;
 import com.pohlandt.wicket.pages.UnauthorizedPage;
@@ -32,15 +27,9 @@ import de.agilecoders.wicket.core.Bootstrap;
  */
 public class WicketApplication extends WebApplication
 {
-	protected final Injector injector;
-	
-	@Inject IRequestCycleListener requestCycleListener;
 	@Inject Logger logger;
-	
-	public WicketApplication() {
-		injector = Guice.createInjector(newGuiceModules());
-		injector.injectMembers(this);
-	}
+	@Inject ISecurityManager securityManager;
+		
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
@@ -58,15 +47,12 @@ public class WicketApplication extends WebApplication
 	{
 		super.init();
 		
-		logger.info("Here we go...");
+		Injector injector = getInjector();
+		injector.injectMembers(this);
 		
 		final GuiceComponentInjector guiceListener = new GuiceComponentInjector(this, injector);
 		getComponentInstantiationListeners().add(guiceListener);
 		getBehaviorInstantiationListeners().add(guiceListener);
-		
-		if(requestCycleListener != null){
-			getRequestCycleListeners().add(requestCycleListener);	
-		}
 		
 		setHeaderResponseDecorator(new IHeaderResponseDecorator()
         {
@@ -83,22 +69,16 @@ public class WicketApplication extends WebApplication
 		getSecuritySettings().setAuthorizationStrategy(authz);
 		getSecuritySettings().setUnauthorizedComponentInstantiationListener(
 			new ShiroUnauthorizedComponentListener(LoginPage.class, UnauthorizedPage.class, authz));
-		
+
+		securityManager.initialize();
+				
 		mountPage("login", LoginPage.class);
 		mountPage("unauthorized", UnauthorizedPage.class);
+		
+		
 	}
 	
-	@Override
-	protected void onDestroy() {
-		logger.info("destroying application...");
-		super.onDestroy();
-		if(requestCycleListener instanceof IDestroyable){
-			logger.info("destroying {}", requestCycleListener.getClass().getSimpleName());
-			((IDestroyable)requestCycleListener).onDestroy();
-		}
-	}
-	
-	protected Module[] newGuiceModules() {
-		return new Module[]{ new LoggingModule(), new ProtoModule() };
+	protected Injector getInjector() {
+		return (Injector) getServletContext().getAttribute(Injector.class.getName());
 	}
 }

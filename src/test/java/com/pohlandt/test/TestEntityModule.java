@@ -9,21 +9,13 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.spi.PersistenceUnitTransactionType;
 
-import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
-import org.apache.wicket.request.cycle.IRequestCycleListener;
-import org.slf4j.Logger;
-
-import model.Text;
-
 import com.google.inject.AbstractModule;
-import com.google.inject.internal.Slf4jLoggerProvider;
-import com.google.inject.matcher.Matchers;
-import com.google.inject.util.Providers;
-import com.pohlandt.entity.IEntityManagerFactory;
+import com.pohlandt.entity.AbstractEntityManagerContext;
+import com.pohlandt.entity.IEntityManagerContext;
 import com.pohlandt.entity.IEntityRepository;
 import com.pohlandt.entity.JpaEntityRepository;
 
-public class TestModule extends AbstractModule {
+public class TestEntityModule extends AbstractModule {
 
 	// org.eclipse.persistence.config.PersistenceUnitProperties
 	public static final String TRANSACTION_TYPE = "javax.persistence.transactionType";
@@ -34,9 +26,9 @@ public class TestModule extends AbstractModule {
 	
 	private EntityManagerFactory entityManagerFactory;
 	
-	private final IEntityManagerFactory entityManagerFactoryImpl = new IEntityManagerFactory() {
+	private final IEntityManagerContext entityManagerFactoryImpl = new AbstractEntityManagerContext() {
 		@Override
-		public EntityManager getEntityManager() {
+		public EntityManager getRequestEntityManager() {
 			if(entityManagerFactory == null){
 				/*
 				 <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
@@ -67,16 +59,17 @@ public class TestModule extends AbstractModule {
 			
 			return entityManagerFactory.createEntityManager();
 		}
+		
+		@Override
+		protected EntityManager getOneShotEntityManager(){
+			return getRequestEntityManager();
+		}
 	};
 
 	private static void intializeTestDatastore(EntityManager entityManager){
 		EntityTransaction tx = entityManager.getTransaction();
 		tx.begin();
-		
-		Text t = new Text();
-		t.setId(1);
-		t.setText("numero uno");
-		entityManager.persist(t);
+	
 		
 		tx.commit();
 		entityManager.close();
@@ -84,10 +77,8 @@ public class TestModule extends AbstractModule {
 	
 	@Override
 	protected void configure() {
-		bind(IRequestCycleListener.class).toInstance(new AbstractRequestCycleListener() {
-		});
 		bind(IEntityRepository.class).to(JpaEntityRepository.class);
-		bind(IEntityManagerFactory.class).toInstance(entityManagerFactoryImpl);
+		bind(IEntityManagerContext.class).toInstance(entityManagerFactoryImpl);
 	}
 
 }

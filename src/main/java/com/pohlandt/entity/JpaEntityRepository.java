@@ -11,7 +11,7 @@ import com.google.inject.Inject;
 
 public class JpaEntityRepository implements IEntityRepository {
 	
-	@Inject IEntityManagerFactory entityManagerFactory;
+	@Inject IEntityManagerContext entityManagerFactory;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -34,6 +34,6 @@ public class JpaEntityRepository implements IEntityRepository {
 	}
 	
 	public EntityManager getEntityManager(){
-		return entityManagerFactory.getEntityManager();
+		return entityManagerFactory.getRequestEntityManager();
 	}
 }
