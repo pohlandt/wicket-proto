@@ -18,7 +18,6 @@ import com.google.inject.Module;
 import com.pohlandt.IDestroyable;
 import com.pohlandt.inject.LoggingModule;
 import com.pohlandt.inject.ProtoModule;
-import com.pohlandt.test.Start;
 import com.pohlandt.wicket.pages.HomePage;
 import com.pohlandt.wicket.pages.LoginPage;
 import com.pohlandt.wicket.pages.UnauthorizedPage;
