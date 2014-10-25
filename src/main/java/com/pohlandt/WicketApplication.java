@@ -14,6 +14,8 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
+import de.agilecoders.wicket.core.Bootstrap;
+
 /**
  * Application object for your web application.
  * If you want to run this application without deploying, run the Start class.
@@ -66,6 +68,8 @@ public class WicketApplication extends WebApplication
                 return new JavaScriptFilteredIntoFooterHeaderResponse(response, "bottomJS");
             }
         });
+		
+		Bootstrap.install(this);
 	}
 	
 	@Override
