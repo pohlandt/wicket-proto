@@ -40,7 +40,7 @@
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>6.17.0</wicket.version>
+		<wicket.version>6.19.0</wicket.version>
 		<jetty.version>7.6.13.v20130916</jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
@@ -78,33 +78,72 @@
 		    	<exclusion>
 		    		<artifactId>javassist</artifactId>
 		    		<groupId>javassist</groupId>
-		    	</exclusion>
+		    		</exclusion>
+			    	<exclusion>
+			    		<artifactId>guava</artifactId>
+			    		<groupId>com.google.guava</groupId>
+			    	</exclusion>
 		    </exclusions>
 		</dependency>
+
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.0</version>
+		</dependency>		
 		
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-servlet</artifactId>
-			<version>3.0</version>
+			<version>4.0</version>
 		</dependency>
-		
-		
+				
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-guice</artifactId>
-			<version>6.17.0</version>
+			<version>6.19.0</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-guice</artifactId>
 			<version>1.2.3</version>
+			 <exclusions>
+		    	<exclusion>
+		    		<artifactId>guava</artifactId>
+		    		<groupId>com.google.guava</groupId>
+		    	</exclusion>
+		    	<exclusion>
+		            <groupId>com.google.inject</groupId>
+		            <artifactId>guice</artifactId>
+		        </exclusion>
+		        <exclusion>
+		            <groupId>com.google.inject.extensions</groupId>
+		            <artifactId>guice-multibindings</artifactId>
+		        </exclusion>
+		        <exclusion>
+		            <groupId>com.google.inject.extensions</groupId>
+		            <artifactId>guice-assistedinject</artifactId>
+		        </exclusion>
+		    </exclusions>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-multibindings</artifactId>
+		    <version>4.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-assistedinject</artifactId>
+		    <version>4.0</version>
 		</dependency>
 						
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>wicketstuff-shiro</artifactId>
-			<version>6.17.0</version>
+			<version>6.19.0</version>
 		</dependency>
 				
 		<dependency>
